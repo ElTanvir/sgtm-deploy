@@ -13,6 +13,10 @@
     chmod +x install.sh
     sudo ./install.sh
     ```
+2.1  **Pull The Image**:
+    ```bash
+    docker pull eltanvir/gtm-server-side:latest
+    ```
 
 3.  **Follow Prompts**:
     - The script will ask for an **Admin Username** and **Password**.
