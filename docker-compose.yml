@@ -1,6 +1,19 @@
 version: '3.8'
 
 services:
+  nats:
+    image: nats:latest
+    container_name: sgtm_nats
+    command: "-js -m 8222"
+    restart: always
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    volumes:
+      - nats_data:/data
+    networks:
+      - gtm_network
+
   panel:
     image: eltanvir/sgtm-panel:latest
     container_name: sgtm_panel
@@ -9,9 +22,12 @@ services:
       - ADMIN_USER=${ADMIN_USER:-admin}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-password}
       - APP_PORT=8080
+      - NATS_URL=nats://nats:4222
     volumes:
       - panel_data:/app/data
       - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - nats
     networks:
       - gtm_network
 
@@ -31,6 +47,7 @@ services:
       - gtm_network
 
 volumes:
+  nats_data:
   panel_data:
 
 networks:
