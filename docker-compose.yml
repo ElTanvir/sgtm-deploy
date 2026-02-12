@@ -15,17 +15,21 @@ services:
       - gtm_network
 
   panel:
-    image: eltanvir/sgtm-panel:latest
+    image: eltanvir/sgtm-panel:dev
     container_name: sgtm_panel
     restart: always
     environment:
       - ADMIN_USER=${ADMIN_USER:-admin}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-password}
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@eltanvir.com}
       - APP_PORT=8080
       - NATS_URL=nats://nats:4222
     volumes:
       - panel_data:/app/data
       - /var/run/docker.sock:/var/run/docker.sock
+      # Shared with Nginx for SSL/Config management
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./certs:/etc/nginx/certs
     depends_on:
       - nats
     networks:
@@ -40,6 +44,7 @@ services:
       - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ./certs:/etc/nginx/certs:ro
     depends_on:
       - panel
