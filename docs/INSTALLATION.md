@@ -16,6 +16,15 @@
     ```bash
     docker pull eltanvir/gtm-server-side:latest
     ```
+    ```bash
+    export TERM=xterm
+    nano .env
+    ADMIN_USER=your_custom_username
+    ADMIN_PASSWORD=your_secure_password
+    ADMIN_EMAIL=your_email@example.com
+    docker-compose pull panel
+    docker-compose up -d panel
+    ```
 
 3.  **Follow Prompts**:
     - The script will ask for an **Admin Username** and **Password**.
